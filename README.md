@@ -1,251 +1,354 @@
 Customer Churn Prediction Using Machine Learning
 
-📌 Project Overview
+Author
 
-Customer churn is a major challenge for businesses that provide subscription-based or long-term services. Losing customers can directly affect revenue, customer relationships, and business growth.
+Rajesh Kumar
+Computer Science Engineering Graduate
+Aspiring Data Scientist | Machine Learning Engineer
 
-This project focuses on building a Machine Learning-based Customer Churn Prediction system that analyzes customer information and predicts whether a customer is likely to churn.
+GitHub: https://github.com/Rajeshkumar0707
 
-The project follows an end-to-end Machine Learning workflow, starting from dataset collection and exploratory data analysis to data preprocessing, model training, evaluation, model serialization, and prediction through a Flask application.
+Project Overview
 
-🎯 Project Objective
+Customer churn is an important business problem where companies need to identify customers who are likely to stop using their services.
 
-The main objective of this project is to develop a machine learning classification system that can identify customers who are likely to leave a service.
+This project develops a Machine Learning-based Customer Churn Prediction system using customer information such as age, gender, tenure, and monthly charges.
 
-The project aims to:
+The project covers data exploration, preprocessing, feature selection, Machine Learning model training, hyperparameter tuning, model evaluation, model saving, and a Streamlit-based prediction application.
 
-Analyze customer data
+Objective
 
-Understand customer churn patterns
+The objective of this project is to build a Machine Learning model that predicts whether a customer is likely to churn based on selected customer attributes.
 
-Perform exploratory data analysis
+Prediction output:
 
-Clean and preprocess the dataset
+YES → Customer is predicted to churn
 
-Prepare features for machine learning
+NO → Customer is predicted not to churn
 
-Train a classification model
+Dataset
 
-Evaluate model performance
-
-Save the trained model
-
-Save the feature scaler
-
-Build a Flask application for predictions
-
-💼 Business Problem
-
-Customer acquisition can be more expensive than retaining existing customers.
-
-If a business can identify customers who are likely to churn, it can take preventive actions such as:
-
-Providing personalized offers
-
-Improving customer support
-
-Offering discounts or incentives
-
-Targeting high-risk customers
-
-Improving customer experience
-
-Developing customer retention strategies
-
-Therefore, a churn prediction model can help businesses make data-driven customer retention decisions.
-
-📊 Dataset
-
-The dataset used in this project was downloaded from Kaggle and used for customer churn analysis and machine learning model development.
-
-The downloaded dataset is included in this project as:
+The dataset was downloaded from Kaggle and is included in the project as:
 
 customer_churn_data.csv
 
-Dataset Source
+Dataset Information
 
-Source: Kaggle
+Rows: 1,000
 
-Dataset Type: Customer Churn Dataset
+Columns: 10
 
-Format: CSV
+Dataset Columns
 
-Note: Add the exact Kaggle dataset URL here if you want to reference the original Kaggle page.
+Column
 
-🔄 End-to-End Machine Learning Workflow
+Description
 
-Kaggle Dataset
-      ↓
-Download Dataset
-      ↓
-Load Dataset
-      ↓
-Data Understanding
-      ↓
-Data Cleaning
-      ↓
+CustomerID
+
+Unique customer identifier
+
+Age
+
+Customer age
+
+Gender
+
+Customer gender
+
+Tenure
+
+Customer tenure
+
+MonthlyCharges
+
+Monthly customer charges
+
+ContractType
+
+Customer contract type
+
+InternetService
+
+Internet service information
+
+TotalCharges
+
+Total customer charges
+
+TechSupport
+
+Technical support information
+
+Churn
+
+Customer churn status
+
 Exploratory Data Analysis
-      ↓
-Feature Selection
-      ↓
-Data Preprocessing
-      ↓
-Feature Scaling
-      ↓
-Train-Test Split
-      ↓
-Machine Learning Model
-      ↓
-Model Evaluation
-      ↓
-Save Trained Model
-      ↓
-Save Scaler
-      ↓
-Flask Application
-      ↓
-Customer Churn Prediction
 
-🔍 Exploratory Data Analysis
-
-Exploratory Data Analysis (EDA) was performed to understand the structure and characteristics of the customer dataset.
+The Jupyter Notebook includes exploratory analysis using Python and Pandas.
 
 The analysis includes:
 
-Dataset dimensions
+Dataset structure inspection
 
-Column information
-
-Data types
+Statistical summary
 
 Missing-value analysis
 
-Duplicate-value analysis
+Duplicate-value checking
 
-Statistical analysis
+Group-based analysis
 
-Numerical feature analysis
+Churn analysis
 
-Categorical feature analysis
+Age analysis
 
-Churn distribution
+Monthly charges analysis
 
-Relationships between customer attributes and churn
+Contract-based analysis
 
-EDA helps identify important patterns and prepares the dataset for machine learning.
+Data visualization
 
-🧹 Data Preprocessing
+Data Preprocessing
 
-Before training the machine learning model, the dataset was prepared through preprocessing steps.
+Missing Values
 
-The preprocessing workflow includes:
+The InternetService column contained missing values.
 
-Checking missing values
+Missing values were replaced with an empty string:
 
-Handling data inconsistencies
+df['InternetService'] = df['InternetService'].fillna("")
 
-Preparing categorical variables
+After preprocessing, there were no remaining missing values.
 
-Selecting relevant features
+Duplicate Records
 
-Preparing the target variable
+Duplicate records were checked using:
 
-Splitting the dataset into training and testing data
+df.duplicated().sum()
 
-Scaling features where required
+The result was 0, meaning no duplicate records were found.
 
-The feature scaler used during preprocessing is saved as:
+Feature Selection
 
-scaler.pkl
+The Machine Learning model uses these four input features:
 
-This allows new customer data to be transformed using the same scaling process used during model training.
+Age
+Gender
+Tenure
+MonthlyCharges
 
-🤖 Machine Learning
+Target variable:
 
-This project uses Supervised Machine Learning to solve a customer churn classification problem.
+Churn
 
-The model learns patterns from historical customer data and uses those patterns to predict the churn outcome for new customers.
+Feature Encoding
 
-Machine Learning Type
+Gender
 
-Supervised Learning
-        ↓
-Classification
-        ↓
-Customer Churn Prediction
+Gender was converted into numerical values:
 
-The trained machine learning model is saved as:
+X['Gender'] = X['Gender'].apply(
+    lambda x: 1 if x == 'Female' else 0
+)
+
+Encoding:
+
+Female → 1
+Male   → 0
+
+Churn
+
+The target variable was converted into numerical values:
+
+y['Churn'] = y['Churn'].apply(
+    lambda x: 1 if x == 'Yes' else 0
+)
+
+Encoding:
+
+Yes → 1
+No  → 0
+
+Train-Test Split
+
+The dataset was divided into training and testing data using train_test_split.
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2
+)
+
+Split:
+
+80% → Training Data
+20% → Testing Data
+
+Feature Scaling
+
+StandardScaler from Scikit-learn was used for feature scaling.
+
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+
+X_train_scaled = scaler.fit_transform(X_train)
+
+The scaler was saved using Joblib:
+
+joblib.dump(scaler, 'scaler.pkl')
+
+Machine Learning Models
+
+The following Machine Learning algorithms were tested:
+
+Logistic Regression
+
+K-Nearest Neighbors (KNN)
+
+Support Vector Classifier (SVC)
+
+Decision Tree Classifier
+
+Random Forest Classifier
+
+Hyperparameter Tuning
+
+GridSearchCV was used for hyperparameter tuning.
+
+K-Nearest Neighbors
+
+Parameters searched:
+
+n_neighbors: [3, 5, 7, 9]
+weights: ['uniform', 'distance']
+
+Best parameters:
+
+n_neighbors = 7
+weights = distance
+
+Support Vector Classifier
+
+Parameters searched:
+
+C: [0.1, 0.1, 0.5, 1]
+kernel: ['linear', 'rbf', 'poly']
+
+Best parameters:
+
+C = 0.1
+kernel = linear
+
+Decision Tree
+
+Parameters searched included:
+
+criterion
+splitter
+max_depth
+min_samples_split
+min_samples_leaf
+
+Best parameters:
+
+criterion = gini
+max_depth = None
+min_samples_leaf = 4
+min_samples_split = 2
+splitter = random
+
+Random Forest
+
+Parameters searched included:
+
+n_estimators
+max_features
+bootstrap
+
+Best parameters:
+
+bootstrap = True
+max_features = 2
+n_estimators = 64
+
+Model Evaluation
+
+The models were evaluated using Accuracy Score.
+
+from sklearn.metrics import accuracy_score
+
+accuracy_score(y_test, predictions)
+
+The notebook reports approximately 91% accuracy for the evaluated models.
+
+Final Model
+
+The final saved model is the best estimator obtained from the Support Vector Classifier (SVC) GridSearchCV process.
+
+Best SVC parameters:
+
+C = 0.1
+kernel = linear
+
+The trained model was saved as:
 
 model.pkl
 
-Saving the trained model allows it to be reused without retraining every time the application starts.
+The feature scaler was saved as:
 
-📈 Model Evaluation
+scaler.pkl
 
-The trained classification model is evaluated using appropriate classification metrics.
+Streamlit Prediction Application
 
-The evaluation process can include:
-
-Accuracy
-
-Precision
-
-Recall
-
-F1-Score
-
-Confusion Matrix
-
-These metrics help determine how effectively the model identifies customers who are likely to churn.
-
-Actual performance values should be added here based on the results from Customer_churn_Analysis.ipynb. No accuracy or other metric is assumed without verification.
-
-🌐 Flask Application
-
-A Flask application is included to use the trained machine learning model for customer churn predictions.
-
-The Flask application is implemented in:
+The project includes a Streamlit application in:
 
 app.py
 
-The application loads:
+The application loads the saved model and scaler:
 
-model.pkl
-scaler.pkl
+scalar = joblib.load("scaler.pkl")
+model = joblib.load("model.pkl")
 
-and uses them to generate predictions from customer input.
+Application Inputs
 
-Prediction Workflow
+The application accepts:
 
-Customer Input
-      ↓
-Input Validation
-      ↓
-Feature Preparation
-      ↓
-Feature Scaling
-      ↓
-Load Trained Model
-      ↓
-Prediction
-      ↓
-Churn Result
+Age
 
-💾 Saved Machine Learning Files
+Gender
 
-model.pkl
+Tenure
 
-Contains the trained machine learning model.
+Monthly Charge
 
-The saved model can be loaded later for making predictions without retraining the model.
+The selected gender is converted into numerical form, the input is transformed using the saved scaler, and the trained model generates the churn prediction.
 
-scaler.pkl
+Prediction Output
 
-Contains the feature scaling object used during preprocessing.
+The application displays:
 
-The same scaler is used to transform new input data before passing it to the trained model.
+Predicted: YES
 
-🛠️ Technologies Used
+or:
+
+Predicted: NO
+
+Project Structure
+
+Customer_Churn_Prediction_Using_ML/
+│
+├── app.py
+├── Customer_churn_Analysis.ipynb
+├── customer_churn_data.csv
+├── model.pkl
+├── scaler.pkl
+├── README.md
+└── .gitignore
+
+Technologies Used
 
 Programming Language
 
@@ -261,17 +364,27 @@ Machine Learning
 
 Scikit-learn
 
-Supervised Learning
+Logistic Regression
 
-Classification
+K-Nearest Neighbors
 
-Feature Scaling
+Support Vector Classifier
 
-Model Evaluation
+Decision Tree
 
-Web Framework
+Random Forest
 
-Flask
+GridSearchCV
+
+StandardScaler
+
+Model Saving
+
+Joblib
+
+Application
+
+Streamlit
 
 Development Tools
 
@@ -283,406 +396,129 @@ Git
 
 GitHub
 
-Dataset Source
+Dataset
 
 Kaggle
 
-📂 Project Structure
+Installation
 
-Customer_Churn_Prediction_Using_ML/
-│
-├── Customer_churn_Analysis.ipynb
-├── customer_churn_data.csv
-├── model.pkl
-├── scaler.pkl
-├── app.py
-├── README.md
-└── .gitignore
-
-📄 File Description
-
-File
-
-Description
-
-Customer_churn_Analysis.ipynb
-
-Complete data analysis, preprocessing, model training, and evaluation workflow
-
-customer_churn_data.csv
-
-Customer churn dataset downloaded from Kaggle
-
-model.pkl
-
-Serialized trained machine learning model
-
-scaler.pkl
-
-Saved feature scaler used during preprocessing
-
-app.py
-
-Flask application used for customer churn prediction
-
-README.md
-
-Project documentation
-
-.gitignore
-
-Specifies files and folders that should not be uploaded to GitHub
-
-⚙️ Installation and Setup
-
-1. Clone the Repository
+Clone the repository:
 
 git clone https://github.com/Rajeshkumar0707/customer-churn-prediction-using-ml.git
 
-2. Navigate to the Project Directory
+Navigate to the project directory:
 
 cd customer-churn-prediction-using-ml
 
-3. Create a Virtual Environment
+Install the required packages:
 
-python -m venv venv
+pip install pandas numpy scikit-learn joblib streamlit
 
-4. Activate the Virtual Environment
+Run the Streamlit Application
 
-For Windows:
+Run:
 
-venv\Scripts\activate
+streamlit run app.py
 
-📦 Install Required Libraries
+The Streamlit application will open in the browser.
 
-Install the required Python packages:
+Enter the required customer information and click the Predict! button to generate the churn prediction.
 
-pip install pandas numpy scikit-learn flask
-
-If a requirements.txt file is added later, dependencies can be installed using:
-
-pip install -r requirements.txt
-
-▶️ Run the Jupyter Notebook
-
-Open the project in VS Code or Jupyter Notebook.
+Run the Jupyter Notebook
 
 Open:
 
 Customer_churn_Analysis.ipynb
 
-Run the notebook cells to perform:
+The notebook contains the Machine Learning workflow:
 
-Data loading
+Data Loading
+     ↓
+Data Exploration
+     ↓
+Data Cleaning
+     ↓
+Missing Value Handling
+     ↓
+Duplicate Checking
+     ↓
+Feature Selection
+     ↓
+Feature Encoding
+     ↓
+Train-Test Split
+     ↓
+Feature Scaling
+     ↓
+Model Training
+     ↓
+Hyperparameter Tuning
+     ↓
+Model Evaluation
+     ↓
+Model Saving
 
-Data analysis
+Git and GitHub
 
-Data preprocessing
+The project was version-controlled using Git and uploaded to GitHub.
 
-Model training
+Git workflow:
 
-Model evaluation
+git init
+git add .
+git status
+git commit -m "Initial commit"
+git remote add origin https://github.com/Rajeshkumar0707/customer-churn-prediction-using-ml.git
+git branch -M main
+git push -u origin main
 
-Model saving
+.gitignore
 
-▶️ Run the Flask Application
-
-After installing the required dependencies, run:
-
-python app.py
-
-The Flask application will start locally.
-
-Open the local URL displayed in the terminal to access the application.
-
-🧪 Testing
-
-The project can be tested through the following workflow.
-
-Machine Learning Testing
-
-Load the dataset
-
-Run the notebook
-
-Verify data preprocessing
-
-Train the model
-
-Evaluate the model
-
-Save the model
-
-Save the scaler
-
-Flask Application Testing
-
-Start the Flask application
-
-Provide customer information
-
-Submit the input
-
-Verify that the application processes the input
-
-Check the predicted churn result
-
-🔐 GitHub Security
-
-The following files and folders should not be uploaded to GitHub:
+The project uses .gitignore to exclude local and unnecessary files:
 
 venv/
 .env
 __pycache__/
-.ipynb_checkpoints/
 *.pyc
+.ipynb_checkpoints/
 
-These files are excluded through .gitignore.
+GitHub Repository
 
-Never store the following information directly in a public repository:
+https://github.com/Rajeshkumar0707/customer-churn-prediction-using-ml
 
-Passwords
+Key Project Highlights
 
-API keys
+Built a Customer Churn Prediction project using Python and Machine Learning.
 
-Database credentials
+Analyzed a 1,000-row customer dataset.
 
-Secret tokens
+Performed missing-value handling and duplicate checking.
 
-Private configuration values
+Selected relevant features for churn prediction.
 
-🌱 Git and GitHub Workflow
+Applied categorical encoding.
 
-This project is managed using Git and uploaded to GitHub.
+Applied feature scaling using StandardScaler.
 
-Initialize Git Repository
+Tested multiple Machine Learning algorithms.
 
-git init
+Used GridSearchCV for hyperparameter tuning.
 
-Add Project Files
+Evaluated models using Accuracy Score.
 
-git add .
+Achieved approximately 91% accuracy in the notebook evaluation.
 
-Check Git Status
+Saved the trained model using Joblib.
 
-git status
+Built a Streamlit-based prediction application.
 
-Create Initial Commit
+Uploaded the project to GitHub.
 
-git commit -m "Initial commit"
-
-Create GitHub Repository
-
-Create a new repository on GitHub with the name:
-
-customer-churn-prediction-using-ml
-
-Recommended settings:
-
-Repository visibility: Public
-
-Add README: No
-
-Add .gitignore: No
-
-Add license: No
-
-The README and .gitignore are already present in the local project.
-
-Connect Local Repository to GitHub
-
-git remote add origin https://github.com/Rajeshkumar0707/customer-churn-prediction-using-ml.git
-
-Rename Branch to Main
-
-git branch -M main
-
-Push Project to GitHub
-
-git push -u origin main
-
-After the push completes, the complete project will be available in the GitHub repository.
-
-🔄 Updating the Project
-
-Whenever changes are made to the project, use:
-
-git add .
-
-git commit -m "Update project"
-
-git push
-
-This keeps the GitHub repository updated with the latest project changes.
-
-💡 Business Applications
-
-Customer churn prediction can be useful in industries such as:
-
-Telecommunications
-
-Banking
-
-Insurance
-
-Subscription services
-
-E-commerce
-
-SaaS
-
-Retail
-
-Financial services
-
-Potential business uses include:
-
-Customer retention
-
-Customer segmentation
-
-Targeted marketing
-
-Personalized offers
-
-Risk identification
-
-Customer relationship management
-
-Reducing customer attrition
-
-🚀 Future Enhancements
-
-Possible improvements for this project include:
-
-Comparing multiple machine learning algorithms
-
-Hyperparameter tuning
-
-Cross-validation
-
-Feature importance analysis
-
-Model explainability
-
-SHAP-based model interpretation
-
-Interactive dashboard
-
-Improved Flask user interface
-
-REST API integration
-
-Cloud deployment
-
-Model monitoring
-
-Automated ML pipeline
-
-Real-time prediction system
-
-📚 Skills Demonstrated
-
-This project demonstrates practical knowledge of:
-
-Python
-
-Pandas
-
-NumPy
-
-Data Cleaning
-
-Exploratory Data Analysis
-
-Data Preprocessing
-
-Feature Engineering
-
-Feature Scaling
-
-Supervised Machine Learning
-
-Classification
-
-Model Evaluation
-
-Model Serialization
-
-Flask
-
-Git
-
-GitHub
-
-Kaggle Dataset Handling
-
-🎓 Learning Outcomes
-
-Through this project, the following practical skills were developed:
-
-Understanding a real-world machine learning problem
-
-Working with a real customer dataset
-
-Performing exploratory data analysis
-
-Preparing data for machine learning
-
-Building a classification model
-
-Evaluating machine learning performance
-
-Saving trained machine learning models
-
-Integrating a trained model with Flask
-
-Managing a project using Git
-
-Publishing a machine learning project on GitHub
-
-📌 Project Highlights
-
-End-to-end Machine Learning project
-
-Real-world customer churn prediction problem
-
-Dataset downloaded from Kaggle
-
-Exploratory Data Analysis
-
-Data preprocessing
-
-Feature scaling
-
-Classification model
-
-Model evaluation
-
-Saved ML model
-
-Saved preprocessing scaler
-
-Flask prediction application
-
-Git and GitHub version control
-
-👨‍💻 Author
+Author
 
 Rajesh Kumar
 
 Computer Science Engineering Graduate
-
 Aspiring Data Scientist | Machine Learning Engineer
 
-GitHub:
-
-https://github.com/Rajeshkumar0707
-
-⭐ Repository
-
-Project Repository:
-
-https://github.com/Rajeshkumar0707/customer-churn-prediction-using-ml
-
-If you find this project useful, consider giving the repository a ⭐.
+GitHub: https://github.com/Rajeshkumar0707
